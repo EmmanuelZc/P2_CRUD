@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @SpringBootApplication
 class AplicacionesmovilesnativasgroovyApplication {
 
-    static void main(String[] args) {
-        SpringApplication.run(AplicacionesmovilesnativasgroovyApplication, args)
-    }
+	static void main(String[] args) {
+		SpringApplication.run(AplicacionesmovilesnativasgroovyApplication, args)
+	}
 
 }

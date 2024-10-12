@@ -1,0 +1,91 @@
+.navbar {
+    padding: 1rem;
+    background-color: #f8f9fa; /* Fondo claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    color: #343a40; /* Color oscuro para contraste */
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background-color: #007bff; /* Línea azul */
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover::before {
+    visibility: visible;
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #007bff; /* Color azul en hover */
+}
+
+.dropdown-menu {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.dropdown-item {
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Botón offcanvas */
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.offcanvas-body {
+    padding-top: 1rem;
+}
+
+.offcanvas-title {
+    font-size: 1.5rem;
+}
+
+/* Estilos responsive */
+@media (min-width: 992px) {
+    .offcanvas-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-nav {
+        justify-content: flex-end;
+    }
+
+    .dropdown-menu {
+        min-width: 150px;
+    }
+}
