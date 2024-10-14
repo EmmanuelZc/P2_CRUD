@@ -23,10 +23,10 @@ public class RegisterController {
             @RequestParam("password") String password,
             Model model) {
 
-            Sql sql = null;
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(password);  // Generar el hash de la contraseña
-            
+            Sql sql = null
+            def passwordEncoder = new BCryptPasswordEncoder()
+            def hashedPassword = passwordEncoder.encode(password) // Generar el hash de la contraseña
+           
         try {
             // Obtener la instancia de conexión a la base de datos
             sql = DatabaseUtils.getSqlInstance();
