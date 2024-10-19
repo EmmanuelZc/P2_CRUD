@@ -17,25 +17,30 @@ repositories {
 	mavenCentral()
 }
 dependencies {
-    implementation 'javax.servlet:javax.servlet-api:4.0.1'  // Esta línea es correcta
-    
-    // Dependencias de Spring Boot y Security
-    implementation 'org.springframework.security:spring-security-crypto:6.1.0'
+    // Elimina cualquier referencia a versiones 3.x de Groovy
+    implementation 'org.apache.groovy:groovy:4.0.23'
+    implementation 'org.apache.groovy:groovy-sql:4.0.23'
 
-    //implementation 'org.springframework.boot:spring-boot-starter-security'  // Esto automáticamente incluye la versión 6.x de Spring Security
+    // Dependencias de Spring Boot y Security
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    /* implementation 'org.springframework.security:spring-security-core:6.1.4'  // Actualiza a la versión 6.x
-    implementation 'org.springframework.security:spring-security-config:6.1.4'  // Actualiza a la versión 6.x
-    implementation 'org.springframework.security:spring-security-crypto:6.1.4'  */ // Actualiza a la versión 6.x
+    implementation 'org.springframework.boot:spring-boot-starter-groovy-templates'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.apache.groovy:groovy:4.0.23'
+
+    // Conector de MySQL
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
-    implementation 'org.apache.groovy:groovy-sql:4.0.23'
-    
+
     // Dependencias de prueba
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+configurations.all {
+    resolutionStrategy {
+        force 'org.apache.groovy:groovy:4.0.23'
+        force 'org.apache.groovy:groovy-sql:4.0.23'
+    }
 }
 
 tasks.named('test') {
