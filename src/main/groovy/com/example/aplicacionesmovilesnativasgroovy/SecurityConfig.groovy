@@ -19,24 +19,15 @@ class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().ignoringRequestMatchers("/registro","/login")
-            .and()
-            .authorizeHttpRequests()
-                .requestMatchers("/registro", "/register","/resources/**","/static/**", "/css/**", "/js/**", "/img/**","/src/**","/templates/**","/").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/register")
-                .permitAll()
-                .and()
-            .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
-                .permitAll()
-            .and()
-            .userDetailsService(customUserDetailsService) 
+            .csrf().disable() // Desactiva la protección CSRF
+            .authorizeHttpRequests { auth ->
+                auth
+                    .requestMatchers("/**").permitAll() // Permite el acceso a todas las rutas
+                    .anyRequest().permitAll()
+            }
+            .formLogin().disable() // Desactiva el formulario de inicio de sesión
+            .logout().disable() // Desactiva el cierre de sesión
+            .userDetailsService(customUserDetailsService)
         return http.build()
     }
 
