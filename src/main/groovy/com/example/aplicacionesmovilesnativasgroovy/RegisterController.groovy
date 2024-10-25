@@ -25,7 +25,7 @@ public class RegisterController {
 
             Sql sql = null
             def passwordEncoder = new BCryptPasswordEncoder()
-            def hashedPassword = passwordEncoder.encode(password) // Generar el hash de la contraseña
+            def hashedPassword = passwordEncoder.encode(password) 
            
         try {
             // Obtener la instancia de conexión a la base de datos

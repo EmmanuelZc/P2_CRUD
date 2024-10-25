@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Login</title>
-    <!-- Enlace a Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -14,21 +13,27 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center mb-4">Iniciar Sesión</h3>
-                        <form action="/iniciar" method="POST" id="loginForm">
+                        
+                        <!-- Mostrar mensaje de error si el login falla -->
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Usuario o contraseña incorrectos.
+                        </div>
+
+                        <form action="/login" method="POST" id="loginForm">
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
                             <div class="mb-3">
                                 <label for="username" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" id="username" placeholder="Introduce tu usuario" required>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Introduce tu usuario" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" required>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Introduce tu contraseña" required>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Iniciar sesión</button>
                             </div>
-                            
                         </form>
+
                         <div class="text-center mt-3">
                             <a href="/register" class="text-decoration-none">¿No tienes cuenta? Regístrate aquí</a>
                         </div>
@@ -37,8 +42,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Enlace a Bootstrap JS (opcional para interactividad) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
