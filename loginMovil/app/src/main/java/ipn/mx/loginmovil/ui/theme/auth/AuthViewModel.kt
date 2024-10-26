@@ -39,8 +39,7 @@ class AuthViewModel : ViewModel() {
 
     fun login(username: String, password: String, callback: (Boolean, User?) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val user = User(username = username, password = password) // Llenar solo con username y password para el login
-            val call = RetrofitClient.instance.loginUser(user)
+            val call = RetrofitClient.instance.loginUser(username, password) // Usar Query en lugar de Body
             call.enqueue(object : Callback<User> {
                 override fun onResponse(call: Call<User>, response: Response<User>) {
                     if (response.isSuccessful) {

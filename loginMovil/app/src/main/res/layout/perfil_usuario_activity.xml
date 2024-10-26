@@ -18,10 +18,8 @@
             <TextView
                 android:id="@+id/tvNombre"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Juan" />
+                android:layout_height="wrap_content" />
         </TableRow>
-
         <TableRow>
             <TextView
                 android:text="Apellido Paterno:"
@@ -30,10 +28,8 @@
             <TextView
                 android:id="@+id/tvApellidoPaterno"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pérez" />
+                android:layout_height="wrap_content" />
         </TableRow>
-
         <TableRow>
             <TextView
                 android:text="Apellido Materno:"
@@ -42,10 +38,8 @@
             <TextView
                 android:id="@+id/tvApellidoMaterno"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="García" />
+                android:layout_height="wrap_content" />
         </TableRow>
-
         <TableRow>
             <TextView
                 android:text="Fecha de Nacimiento:"
@@ -54,10 +48,8 @@
             <TextView
                 android:id="@+id/tvFechaNacimiento"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="01/01/1990" />
+                android:layout_height="wrap_content" />
         </TableRow>
-
         <TableRow>
             <TextView
                 android:text="Usuario:"
@@ -66,10 +58,8 @@
             <TextView
                 android:id="@+id/tvUsuario"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="juan.perez" />
+                android:layout_height="wrap_content" />
         </TableRow>
-
     </TableLayout>
 
     <Button

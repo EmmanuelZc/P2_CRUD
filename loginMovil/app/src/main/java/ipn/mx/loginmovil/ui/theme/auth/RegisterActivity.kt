@@ -46,9 +46,9 @@ class RegisterActivity : AppCompatActivity() {
         registerButton.setOnClickListener {
             val user = User(
                 nombre = nameField.text.toString(),
-                apellidoPaterno = lastNameField.text.toString(),
-                apellidoMaterno = lastName2Field.text.toString(),
-                fechaNacimiento = birthdateField.text.toString(),
+                apaterno = lastNameField.text.toString(),
+                amaterno = lastName2Field.text.toString(),
+                cumple = birthdateField.text.toString(),
                 username = usernameField.text.toString(),
                 password = passwordField.text.toString()
             )

@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
 import ipn.mx.loginmovil.data.models.User
 import ipn.mx.loginmovil.ui.theme.auth.AuthViewModel
+import ipn.mx.loginmovil.R
 
 class AdminActivity : ComponentActivity() {
 
