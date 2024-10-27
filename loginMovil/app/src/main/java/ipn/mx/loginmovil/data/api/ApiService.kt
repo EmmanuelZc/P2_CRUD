@@ -22,6 +22,6 @@ interface ApiService {
     fun getUserProfile(@Path("username") username: String): Call<User>
 
     // Obtener todos los usuarios
-    @GET("api/auth/admin")
+    @POST("api/auth/admin")
     fun getAllUsers(): Call<List<User>>
 }

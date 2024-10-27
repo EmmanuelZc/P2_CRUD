@@ -5,52 +5,12 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <TableLayout
+    <!-- ListView para mostrar la lista de usuarios -->
+    <ListView
+        android:id="@+id/userListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="1">
-
-        <TableRow>
-            <TextView
-                android:text="Usuario"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="Acciones"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-
-        <!-- Ejemplo de usuario 1 -->
-        <TableRow>
-            <TextView
-                android:text="juan.perez"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btnModificarUsuario1"
-                    android:text="Modificar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/btnEliminarUsuario1"
-                    android:text="Eliminar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </TableRow>
-
-        <!-- Repite esta estructura para cada usuario -->
-
-    </TableLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/btnAgregarUsuario"
