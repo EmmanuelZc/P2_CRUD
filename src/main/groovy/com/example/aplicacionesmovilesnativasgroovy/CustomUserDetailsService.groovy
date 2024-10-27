@@ -21,12 +21,17 @@ class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Usuario no encontrado")
         }
+
+        def authorities = user.roles.collect { 
+            new SimpleGrantedAuthority(it.nombre) 
+        }
+
         return new org.springframework.security.core.userdetails.User(
                 user.username,
                 user.password,
                 user.enabled,
                 true, true, true,
-                user.roles.collect { new SimpleGrantedAuthority(it.nombre) }  
+                authorities
         )
     }
 }

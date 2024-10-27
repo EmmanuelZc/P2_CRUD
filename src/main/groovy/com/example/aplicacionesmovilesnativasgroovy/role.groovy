@@ -2,6 +2,7 @@ package com.example.aplicacionesmovilesnativasgroovy
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.ManyToMany
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference
 
 
 @Entity
-@Table(name = "roles") // Nombre correcto de la tabla
+@Table(name = "roles") 
 class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
