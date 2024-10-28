@@ -65,6 +65,7 @@ dependencies {
     //okhttp
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.bcrypt)
 
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)

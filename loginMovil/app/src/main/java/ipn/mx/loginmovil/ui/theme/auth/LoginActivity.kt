@@ -26,6 +26,7 @@ class LoginActivity : ComponentActivity() {
         val usernameEditText = findViewById<EditText>(R.id.etUsername)
         val passwordEditText = findViewById<EditText>(R.id.etPassword)
         val loginButton = findViewById<Button>(R.id.btnLogin)
+        val registerButton = findViewById<Button>(R.id.btnRegister)
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
@@ -58,6 +59,11 @@ class LoginActivity : ComponentActivity() {
                     Toast.makeText(this, "Error de autenticación", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        registerButton.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 }

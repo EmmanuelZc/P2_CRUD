@@ -16,21 +16,22 @@ class AuthViewModel : ViewModel() {
     val userLiveData = MutableLiveData<User?>()
     val usersLiveData = MutableLiveData<List<User>?>()
     val errorMessage = MutableLiveData<String>()
+    val registerStatus = MutableLiveData<Int>()
 
     // Método para registrar un usuario
     fun registerUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
             val call = RetrofitClient.instance.registerUser(user)
-            call.enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
-                        userLiveData.postValue(response.body())
+                        registerStatus.postValue(response.code())  // Código HTTP 201 para éxito
                     } else {
-                        errorMessage.postValue("Error al registrar usuario")
+                        errorMessage.postValue("Error al registrar usuario. Código: ${response.code()}")
                     }
                 }
 
-                override fun onFailure(call: Call<User>, t: Throwable) {
+                override fun onFailure(call: Call<Void>, t: Throwable) {
                     errorMessage.postValue(t.message)
                 }
             })
@@ -103,4 +104,6 @@ class AuthViewModel : ViewModel() {
             })
         }
     }
+
+
 }

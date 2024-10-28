@@ -33,6 +33,9 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson"}
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+# Para jBCrypt
+bcrypt = { group = "org.mindrot", name = "jbcrypt", version = "0.4" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

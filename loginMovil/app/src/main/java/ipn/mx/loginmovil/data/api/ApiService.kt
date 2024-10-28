@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface ApiService {
     // Obtener nuevo usuario
     @POST("api/auth/registro")
-    fun registerUser(@Body user: User): Call<User>
+    fun registerUser(@Body user: User): Call<Void>
 
     // Autenticar usuario (modificado para usar Query)
     @POST("api/auth")
