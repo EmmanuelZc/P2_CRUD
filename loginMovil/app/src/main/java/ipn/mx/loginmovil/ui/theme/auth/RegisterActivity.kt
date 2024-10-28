@@ -7,17 +7,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ipn.mx.loginmovil.R
+import ipn.mx.loginmovil.data.models.Rol
 import ipn.mx.loginmovil.data.models.User
-import ipn.mx.loginmovil.ui.theme.auth.AuthViewModel
+import org.mindrot.jbcrypt.BCrypt
 
 class RegisterActivity : AppCompatActivity() {
-
     private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registro_activity)
 
+        // Inicializa el ViewModel para manejar la lógica de registro
+        viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+
+        // Referencia a los campos de texto en el layout
         val nameField: EditText = findViewById(R.id.etNombre)
         val lastNameField: EditText = findViewById(R.id.etApellidoPaterno)
         val lastName2Field: EditText = findViewById(R.id.etApellidoMaterno)
@@ -26,13 +30,14 @@ class RegisterActivity : AppCompatActivity() {
         val passwordField: EditText = findViewById(R.id.etContrasena)
         val registerButton: Button = findViewById(R.id.btnRegistrar)
 
-        val viewModel: AuthViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-
         // Observa la respuesta del registro
-        viewModel.userLiveData.observe(this) { user ->
-            if (user != null) {
+        viewModel.registerStatus.observe(this) { status ->
+            if (status == 201) {
                 Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_LONG).show()
-                // Aquí puedes navegar a otra actividad, por ejemplo, LoginActivity
+                setResult(RESULT_OK)
+                finish() // Cierra la actividad después del registro exitoso
+            } else {
+                Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -43,17 +48,39 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+        // Configura el click listener para el botón de registro
         registerButton.setOnClickListener {
-            val user = User(
-                nombre = nameField.text.toString(),
-                apellidoPaterno = lastNameField.text.toString(),
-                apellidoMaterno = lastName2Field.text.toString(),
-                fechaNacimiento = birthdateField.text.toString(),
-                username = usernameField.text.toString(),
-                password = passwordField.text.toString()
-            )
-            viewModel.registerUser(user)
+            val name = nameField.text.toString()
+            val lastName = lastNameField.text.toString()
+            val lastName2 = lastName2Field.text.toString()
+            val birthdate = birthdateField.text.toString()
+            val username = usernameField.text.toString()
+            val password = passwordField.text.toString()
+
+            if (name.isNotEmpty() && lastName.isNotEmpty() && lastName2.isNotEmpty() &&
+                birthdate.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
+
+                // Encripta la contraseña usando BCrypt
+                val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
+
+                // Crea un objeto User con los datos ingresados y la contraseña encriptada
+                val user = User(
+                    id = 0, // Cambia el id si es necesario o deja en 0 para nuevo usuario
+                    nombre = name,
+                    apaterno = lastName,
+                    amaterno = lastName2,
+                    cumple = birthdate,
+                    username = username,
+                    password = hashedPassword,
+                    enabled = true, // Asegúrate de establecer el estado del usuario
+                    roles = listOf(Rol(id = 2, nombre = "ROLE_USER")) // Asigna el rol por defecto
+                )
+                // Llama al método del ViewModel para registrar el usuario
+                viewModel.registerUser(user)
+
+            } else {
+                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
 }

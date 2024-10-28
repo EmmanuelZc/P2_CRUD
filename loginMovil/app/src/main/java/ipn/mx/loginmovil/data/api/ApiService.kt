@@ -6,18 +6,22 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
-    @POST("api/usuarios/registro")
-    fun registerUser(@Body user: User): Call<User>
+    // Obtener nuevo usuario
+    @POST("api/auth/registro")
+    fun registerUser(@Body user: User): Call<Void>
 
-    @POST("api/usuarios/login")
-    fun loginUser(@Body user: User): Call<User>
+    // Autenticar usuario (modificado para usar Query)
+    @POST("api/auth")
+    fun loginUser(@Query("usuario") usuario: String, @Query("password") password: String):Call<User>
 
-    @GET("api/usuarios/perfil/{username}")
+    // Obtener perfil del usuario
+    @GET("api/auth/perfil/{username}")
     fun getUserProfile(@Path("username") username: String): Call<User>
 
-    // Nuevo: Obtener todos los usuarios
-    @GET("api/usuarios")
+    // Obtener todos los usuarios
+    @POST("api/auth/admin")
     fun getAllUsers(): Call<List<User>>
 }
