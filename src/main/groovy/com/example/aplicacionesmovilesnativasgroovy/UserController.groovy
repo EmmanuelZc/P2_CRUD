@@ -52,4 +52,19 @@ class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
         }
     }
+
+        @DeleteMapping("/delete/{id}")
+    ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
+        try {
+            if (userRepository.existsById(id)) {
+                userRepository.deleteById(id)
+                return ResponseEntity.ok("Usuario eliminado con exito")
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado")
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
+        }
+    }
 }
