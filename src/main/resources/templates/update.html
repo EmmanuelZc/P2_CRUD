@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar datos de usuario</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class="container">
+        <h2>Actualización de Información del Usuario</h2>
+        <form id="updateForm" onsubmit="updateUser(event)">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre">
+            </div>
+            <div class="form-group">
+                <label for="apellidoPaterno">Apellido Paterno:</label>
+                <input type="text" id="apellidoPaterno" name="apellidoPaterno">
+            </div>
+            <div class="form-group">
+                <label for="apellidoMaterno">Apellido Materno:</label>
+                <input type="text" id="apellidoMaterno" name="apellidoMaterno">
+            </div>
+            <div class="form-group">
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+            </div>
+            <div class="form-group">
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
+
+    <script>
+        function updateUser(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const apellidoPaterno = document.getElementById('apellidoPaterno').value;
+            const apellidoMaterno = document.getElementById('apellidoMaterno').value;
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+        };
+    </script>
+</body>
+</html>
