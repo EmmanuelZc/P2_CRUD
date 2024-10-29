@@ -1,0 +1,12 @@
+<!-- src/main/resources/templates/error.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+</head>
+<body>
+    <h1>Oops! Algo salió mal.</h1>
+    <p th:text="'Error ' + ${status} + ': ' + ${error}"></p>
+    <p th:text="${message}"></p>
+</body>
+</html>

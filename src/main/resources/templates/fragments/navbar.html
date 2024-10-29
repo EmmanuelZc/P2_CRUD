@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="@{/css/bootstrap.min.css}" rel="stylesheet">
     
 </head>
@@ -23,16 +24,29 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" th:unless="${isAuthenticated}">
                             <a class="nav-link" href="/login">Log in</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" th:unless="${isAuthenticated}">
                             <a class="nav-link" href="/register">Register</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">User</a>
+                        
+                        <li class="nav-item dropdown" th:if="${isAuthenticated}">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                                <span th:text="${username}">Username</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form action="/logout" method="POST" style="display: inline;">
+                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
-
+                        
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                               Action
@@ -49,5 +63,7 @@
         </div>
     </nav>
     <script src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
 </body>
 </html>

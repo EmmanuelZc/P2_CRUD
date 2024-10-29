@@ -3,13 +3,17 @@ package com.example.aplicacionesmovilesnativasgroovy
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.security.core.Authentication;
 
 @Controller
 class HomeController {
 
     @GetMapping("/")
-    def index(Model model) {
-        return "index"  // Se busca el archivo index.html en templates
+    def index(Model model, Authentication authentication) {
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+        model.addAttribute("isAuthenticated", isAuthenticated);
+        model.addAttribute("username", isAuthenticated ? authentication.getName() : "Guest");
+        return "index"  
     }
 
     @GetMapping("/register")
