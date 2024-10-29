@@ -5,10 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #4A90E2, #003366); /* Degradado azul */
+            margin: 0;
+        }
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px; /* Para espacio en pantallas pequeñas */
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px; /* Reducir el padding en pantallas más pequeñas */
+            }
+            h2 {
+                font-size: 1.5rem; /* Ajuste de tamaño de fuente en pantallas pequeñas */
+            }
+            button {
+                font-size: 1rem; /* Ajuste de tamaño del botón */
+            }
+        }
+        @media (max-width: 576px) {
+            .form-container {
+                padding: 15px; /* Aún más reducido para pantallas muy pequeñas */
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            button {
+                font-size: 0.9rem; /* Botón más pequeño en pantallas muy pequeñas */
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Registro de Usuario</h2>
+    <nav th:replace="fragments/navbar :: navFragment"></nav>
+    <div class="form-container">
+        <h2 class="text-center">Registro de Usuario</h2>
         <form action="/registro" method="POST" id="registroForm">
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <div class="mb-3">
@@ -35,7 +81,7 @@
                 <label for="password" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
             </div>
-            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="submit" class="btn btn-primary w-100">Registrar</button>
         </form>
     </div>
 </body>
