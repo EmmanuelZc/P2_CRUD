@@ -1,6 +1,7 @@
 package ipn.mx.loginmovil.ui.theme.admin
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import ipn.mx.loginmovil.R
 import ipn.mx.loginmovil.data.models.User
+import ipn.mx.loginmovil.ui.theme.auth.EditUserActivity
 
 class UserListAdapter(private val context: Context, private val users: List<User>) : BaseAdapter() {
     override fun getCount(): Int {
@@ -35,8 +37,10 @@ class UserListAdapter(private val context: Context, private val users: List<User
         usernameView.text = user.username
 
         modifyButton.setOnClickListener {
-            // Lógica para modificar el usuario
-            Toast.makeText(context, "Modificar usuario: ${user.username}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, EditUserActivity::class.java).apply {
+                putExtra("USERNAME", user.username)
+            }
+            context.startActivity(intent)
         }
 
         deleteButton.setOnClickListener {

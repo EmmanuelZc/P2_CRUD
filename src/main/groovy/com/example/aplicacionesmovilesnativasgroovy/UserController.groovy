@@ -53,7 +53,7 @@ class UserController {
         }
     }
 
-        @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         try {
             if (userRepository.existsById(id)) {
@@ -67,4 +67,5 @@ class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
         }
     }
+
 }

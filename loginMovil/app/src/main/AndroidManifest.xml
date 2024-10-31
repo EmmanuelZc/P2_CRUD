@@ -29,6 +29,9 @@
         <activity android:name=".ui.theme.profile.ProfileActivity" />
         <activity android:name=".ui.theme.admin.AdminActivity" />
         <activity android:name=".ui.theme.auth.RegisterActivity" />
+        <activity android:name=".ui.theme.auth.EditUserActivity" />
+
+
 </application>
 
 </manifest>

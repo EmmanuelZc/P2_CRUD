@@ -17,6 +17,7 @@ class AuthViewModel : ViewModel() {
     val usersLiveData = MutableLiveData<List<User>?>()
     val errorMessage = MutableLiveData<String>()
     val registerStatus = MutableLiveData<Int>()
+    val updateStatus = MutableLiveData<Int>()
 
     // Método para registrar un usuario
     fun registerUser(user: User) {
@@ -104,6 +105,28 @@ class AuthViewModel : ViewModel() {
             })
         }
     }
+
+    fun updateUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val call = RetrofitClient.instance.updateUser(user)
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        updateStatus.postValue(response.code())
+                    } else {
+                        updateStatus.postValue(response.code())
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    errorMessage.postValue(t.message)
+                }
+            })
+        }
+    }
+
+
+
 
 
 }

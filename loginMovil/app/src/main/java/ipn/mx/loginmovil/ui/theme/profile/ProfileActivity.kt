@@ -1,13 +1,18 @@
 package ipn.mx.loginmovil.ui.theme.profile
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import ipn.mx.loginmovil.R
 import ipn.mx.loginmovil.ui.theme.auth.AuthViewModel
+import ipn.mx.loginmovil.ui.theme.auth.EditUserActivity
+import ipn.mx.loginmovil.ui.theme.auth.LoginActivity
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var nameView: TextView
@@ -15,8 +20,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var middleNameView: TextView
     private lateinit var birthDateView: TextView
     private lateinit var usernameView: TextView
+    private lateinit var editButton: Button
+    private lateinit var logoutButton: Button
 
-    // Usa el ViewModel
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,15 +34,15 @@ class ProfileActivity : AppCompatActivity() {
         middleNameView = findViewById(R.id.tvApellidoMaterno)
         birthDateView = findViewById(R.id.tvFechaNacimiento)
         usernameView = findViewById(R.id.tvUsuario)
+        editButton = findViewById(R.id.btnEditar)
+        logoutButton = findViewById(R.id.btnCerrarSesion)
 
-        // Verificar si los datos están en el Intent
         val nombre = intent.getStringExtra("nombre")
         val apellidoPaterno = intent.getStringExtra("apellidoPaterno")
         val apellidoMaterno = intent.getStringExtra("apellidoMaterno")
         val fechaNacimiento = intent.getStringExtra("fechaNacimiento")
         val username = intent.getStringExtra("username")
 
-        // Si los datos están en el Intent, mostrarlos directamente
         if (nombre != null && apellidoPaterno != null && apellidoMaterno != null && fechaNacimiento != null && username != null) {
             nameView.text = nombre
             lastNameView.text = apellidoPaterno
@@ -44,16 +50,12 @@ class ProfileActivity : AppCompatActivity() {
             birthDateView.text = fechaNacimiento
             usernameView.text = username
         } else {
-            // Si no están, entonces llama al ViewModel para obtener el perfil
             val userNameForProfile = username ?: ""
             viewModel.getUserProfile(userNameForProfile)
-
-            // Observa el LiveData del ViewModel para recibir cambios en el perfil del usuario
             viewModel.userLiveData.observe(this, Observer { userProfile ->
                 if (userProfile != null) {
-                    // Actualiza las vistas con la información del perfil
                     nameView.text = userProfile.nombre
-                    lastNameView.text = userProfile.amaterno
+                    lastNameView.text = userProfile.apaterno
                     middleNameView.text = userProfile.amaterno
                     birthDateView.text = userProfile.cumple
                     usernameView.text = userProfile.username
@@ -63,11 +65,38 @@ class ProfileActivity : AppCompatActivity() {
             })
         }
 
-        // Observa si hay errores
         viewModel.errorMessage.observe(this, Observer { error ->
             error?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         })
+
+        val editUserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                // Recarga el perfil del usuario después de la actualización
+                val userNameForProfile = usernameView.text.toString()
+                viewModel.getUserProfile(userNameForProfile)
+            }
+        }
+
+        editButton.setOnClickListener {
+            val intent = Intent(this, EditUserActivity::class.java).apply {
+                putExtra("USERNAME", username)
+            }
+            editUserLauncher.launch(intent)
+        }
+
+        logoutButton.setOnClickListener {
+            // Realiza cualquier acción adicional de cierre de sesión aquí, como limpiar datos del usuario
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish() // Finaliza la actividad actual
+        }
+    }
+
+    companion object {
+        const val EDIT_USER_REQUEST = 2
     }
 }

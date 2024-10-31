@@ -45,9 +45,37 @@ class AdminController {
                 rol.nombre = rolMap.get("nombre").toString()
                 user.roles.add(rol)
             }
-
             userRepository.save(user)
             return ResponseEntity.status(HttpStatus.CREATED).build()
+        } catch (Exception e) {
+            e.printStackTrace()
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+        }
+    }
+
+    @PutMapping(value = "/update", consumes = "application/json", produces = "application/json")
+    ResponseEntity<Void> updateUser(@RequestBody Map<String, Object> userMap) {
+        try {
+            User existingUser = userRepository.findByUsername(userMap.get("username").toString())
+            if (existingUser != null) {
+                existingUser.nombre = userMap.get("nombre").toString()
+                existingUser.apaterno = userMap.get("apaterno").toString()
+                existingUser.amaterno = userMap.get("amaterno").toString()
+                existingUser.cumple = userMap.get("cumple").toString()
+                existingUser.password = userMap.get("password").toString() // Ya viene encriptada
+                existingUser.enabled = userMap.get("enabled") as Boolean
+                existingUser.roles = new HashSet<>()
+                userMap.get("roles").each { rolMap ->
+                    Rol rol = new Rol()
+                    rol.id = (rolMap.get("id") as Number).longValue()
+                    rol.nombre = rolMap.get("nombre").toString()
+                    existingUser.roles.add(rol)
+                }
+                userRepository.save(existingUser)
+                return ResponseEntity.status(HttpStatus.OK).build()
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            }
         } catch (Exception e) {
             e.printStackTrace()
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
