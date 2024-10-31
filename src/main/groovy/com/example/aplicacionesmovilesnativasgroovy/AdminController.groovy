@@ -81,4 +81,20 @@ class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
         }
     }
+
+    @DeleteMapping(value = "/delete/{username}", produces = "application/json") 
+    ResponseEntity<Void> deleteUser(@PathVariable("username") String username) {
+        try {
+            User existingUser = userRepository.findByUsername(username)
+            if (existingUser != null) {
+                userRepository.delete(existingUser)
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build()
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+        }
+    }
 }

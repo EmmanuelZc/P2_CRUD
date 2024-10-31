@@ -43,6 +43,30 @@ class AdminActivity : ComponentActivity() {
             startActivityForResult(intent, EDIT_USER_REQUEST)
         }
 
+        userListView.setOnItemLongClickListener { _, _, position, _ ->
+            val selectedUser = userListView.adapter.getItem(position) as User
+            viewModel.deleteUser(selectedUser.username)
+            true
+        }
+
+        viewModel.deleteStatus.observe(this) { status ->
+            if (status == 200) {
+                Toast.makeText(this, "Usuario eliminado correctamente", Toast.LENGTH_LONG).show()
+                loadUserList() // Recarga la lista de usuarios después de la eliminación
+            } else {
+                Toast.makeText(this, "Error al eliminar usuario", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.updateStatus.observe(this) { status ->
+            if (status == 200) {
+                Toast.makeText(this, "Usuario actualizado correctamente", Toast.LENGTH_LONG).show()
+                loadUserList() // Recarga la lista de usuarios después de la actualización
+            } else {
+                Toast.makeText(this, "Error al actualizar usuario", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         logoutButton.setOnClickListener {
             // Realiza cualquier acción adicional de cierre de sesión aquí, como limpiar datos del usuario
 
@@ -56,7 +80,9 @@ class AdminActivity : ComponentActivity() {
     private fun loadUserList() {
         viewModel.getAllUsers { success, userList ->
             if (success && userList != null) {
-                val adapter = UserListAdapter(this, userList)
+                val adapter = UserListAdapter(this, userList) { username ->
+                    viewModel.deleteUser(username)
+                }
                 userListView.adapter = adapter
             } else {
                 Toast.makeText(this, "Error al cargar la lista de usuarios", Toast.LENGTH_SHORT).show()
@@ -68,9 +94,10 @@ class AdminActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == REGISTER_USER_REQUEST || requestCode == EDIT_USER_REQUEST) && resultCode == RESULT_OK) {
             loadUserList()
+        }else if (requestCode == EDIT_USER_REQUEST && resultCode == RESULT_OK) {
+            loadUserList()
         }
     }
-
 
     companion object {
         const val REGISTER_USER_REQUEST = 1

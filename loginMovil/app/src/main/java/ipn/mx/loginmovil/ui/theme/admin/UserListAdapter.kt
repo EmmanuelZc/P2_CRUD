@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import ipn.mx.loginmovil.R
 import ipn.mx.loginmovil.data.models.User
 import ipn.mx.loginmovil.ui.theme.auth.EditUserActivity
 
-class UserListAdapter(private val context: Context, private val users: List<User>) : BaseAdapter() {
+class UserListAdapter(
+    private val context: Context,
+    private val users: List<User>,
+    private val deleteUserCallback: (String) -> Unit
+) : BaseAdapter() {
+
     override fun getCount(): Int {
         return users.size
     }
@@ -28,12 +32,10 @@ class UserListAdapter(private val context: Context, private val users: List<User
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.user_list_item, parent, false)
-
         val user = getItem(position) as User
         val usernameView = view.findViewById<TextView>(R.id.item_username)
         val modifyButton = view.findViewById<Button>(R.id.btnModificarUsuario)
         val deleteButton = view.findViewById<Button>(R.id.btnEliminarUsuario)
-
         usernameView.text = user.username
 
         modifyButton.setOnClickListener {
@@ -44,8 +46,7 @@ class UserListAdapter(private val context: Context, private val users: List<User
         }
 
         deleteButton.setOnClickListener {
-            // Lógica para eliminar el usuario
-            Toast.makeText(context, "Eliminar usuario: ${user.username}", Toast.LENGTH_SHORT).show()
+            deleteUserCallback(user.username)
         }
 
         return view
