@@ -98,4 +98,5 @@ class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
         }
     }
+
 }

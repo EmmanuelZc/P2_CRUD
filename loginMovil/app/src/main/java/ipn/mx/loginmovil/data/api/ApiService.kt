@@ -7,6 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.PUT
+import retrofit2.http.DELETE
 
 interface ApiService {
     // Obtener nuevo usuario
@@ -24,4 +26,12 @@ interface ApiService {
     // Obtener todos los usuarios
     @POST("api/auth/admin")
     fun getAllUsers(): Call<List<User>>
+
+    // Actualizar perfil del usuario
+    @PUT("api/auth/update")
+    fun updateUser(@Body user: User): Call<Void>
+
+    // Actualizar perfil del usuario
+    @DELETE("api/auth/delete/{username}")
+    fun deleteUser(@Path("username") username: String): Call<Void>
 }

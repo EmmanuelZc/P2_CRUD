@@ -29,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         val usernameField: EditText = findViewById(R.id.etUsuario)
         val passwordField: EditText = findViewById(R.id.etContrasena)
         val registerButton: Button = findViewById(R.id.btnRegistrar)
+        val backButton: Button = findViewById(R.id.btnRegresar)
 
         // Observa la respuesta del registro
         viewModel.registerStatus.observe(this) { status ->
@@ -72,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
                     cumple = birthdate,
                     username = username,
                     password = hashedPassword,
-                    enabled = true, // Asegúrate de establecer el estado del usuario
+                    enabled = true, // Establecer el estado del usuario
                     roles = listOf(Rol(id = 2, nombre = "ROLE_USER")) // Asigna el rol por defecto
                 )
                 // Llama al método del ViewModel para registrar el usuario
@@ -81,6 +82,10 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        backButton.setOnClickListener {
+            finish() // Finaliza la actividad actual y regresa a la anterior
         }
     }
 }

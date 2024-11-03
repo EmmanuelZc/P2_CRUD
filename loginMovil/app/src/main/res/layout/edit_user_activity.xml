@@ -27,32 +27,30 @@
         android:id="@+id/etFechaNacimiento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha de Nacimiento"
-        android:inputType="date" />
+        android:hint="Fecha de Nacimiento" />
 
     <EditText
         android:id="@+id/etUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Usuario" />
+        android:hint="Usuario"
+        android:enabled="false" />
 
     <EditText
         android:id="@+id/etContrasena"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:hint="Nueva Contraseña" />
 
     <Button
-        android:id="@+id/btnRegistrar"
+        android:id="@+id/btnGuardarCambios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrar" />
+        android:text="Actualizar" />
 
     <Button
         android:id="@+id/btnRegresar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Regresar" />
-
 </LinearLayout>
