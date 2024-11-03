@@ -67,4 +67,35 @@ class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
         }
     }
+
+    @PutMapping("/auth/update")
+    ResponseEntity<?> updateUser(@RequestBody User updatedUser) {
+        try {
+            User user = userRepository.findById(updatedUser.id).orElse(null)
+
+            if (user != null) {
+                // Actualiza los campos del usuario existente con los datos nuevos (excluyendo la contraseña si no se desea actualizar)
+                user.username = updatedUser.username ?: user.username
+                user.email = updatedUser.email ?: user.email
+
+                // Si se incluye una nueva contraseña en el objeto `updatedUser`, la ciframos antes de guardarla
+                if (updatedUser.password) {
+                    def passwordEncoder = new BCryptPasswordEncoder()
+                    user.password = passwordEncoder.encode(updatedUser.password)
+                }
+
+                // Guarda los cambios en el repositorio
+                userRepository.save(user)
+
+                // Excluir la contraseña del JSON devuelto
+                user.password = null
+                return ResponseEntity.ok(user)
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado")
+            }
+        } catch (Exception e) {
+            e.printStackTrace()
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor")
+        }
+    }
 }

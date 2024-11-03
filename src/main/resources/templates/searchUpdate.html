@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar datos de usuario</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+    <div class ="container">
+        <h2>Actualización de Información del Usuario</h2>
+        <form id="updateRequest" onsubmit="">
+            <div class ="init-group">
+                <label>Ingrese su ID de usuario:</label>
+                <ul></ul>
+                <label for="idUser"></label>
+                <input type="text" id="idUser" name="idUsr" required>
+
+            </div>
+            <button type="submit" onclick="window.location.href='update.html';">Buscar</button>
+        </form>
+    </div>
+</body>
+</html>
