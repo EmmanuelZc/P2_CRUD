@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import com.example.utils.DatabaseUtils
+
 @Configuration
 class SecurityConfig {
 
@@ -42,8 +44,13 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 }
 
 
-    @Bean
+     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder()
+    }
+
+    @Bean
+    DatabaseUtils databaseUtils() {
+        return new DatabaseUtils()
     }
 }

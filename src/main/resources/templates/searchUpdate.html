@@ -9,16 +9,14 @@
 <body>
     <div class ="container">
         <h2>Actualización de Información del Usuario</h2>
-        <form id="updateRequest" onsubmit="">
-            <div class ="init-group">
+        <form id="updateRequest" th:action="@{/updateUser/findUser}" method="post">
+            <div class="init-group">
                 <label>Ingrese su ID de usuario:</label>
-                <ul></ul>
-                <label for="idUser"></label>
                 <input type="text" id="idUser" name="idUsr" required>
-
             </div>
-            <button type="submit" onclick="window.location.href='update.html';">Buscar</button>
+            <button type="submit">Buscar</button>
         </form>
+        
     </div>
 </body>
 </html>
