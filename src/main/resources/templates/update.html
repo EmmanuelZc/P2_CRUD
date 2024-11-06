@@ -7,6 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
+    <div>
+        <nav th:replace="fragments/navbar :: navFragment"></nav>
+    </div>
     <div class="container">
         <h2>Actualización de Información del Usuario</h2>
         <form id="updateForm" th:action="@{/updateUser/update}" method="post">
