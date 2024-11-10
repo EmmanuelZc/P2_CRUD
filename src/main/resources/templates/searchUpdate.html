@@ -5,18 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar datos de usuario</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <style>
+        /* Estilos adicionales para centrar el formulario verticalmente */
+        .center-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
 </head>
 <body>
-    <div class ="container">
-        <h2>Actualización de Información del Usuario</h2>
-        <form id="updateRequest" th:action="@{/updateUser/findUser}" method="post">
-            <div class="init-group">
-                <label>Ingrese su ID de usuario:</label>
-                <input type="text" id="idUser" name="idUsr" required>
+    <nav th:replace="fragments/navbar :: navFragment"></nav>
+
+    <div class="container center-screen">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3>Actualización de Información del Usuario</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="updateRequest" th:action="@{/updateUser/findUser}" method="post">
+                            <div class="form-group mb-3">
+                                <label for="idUser" class="form-label">Ingrese su ID de usuario:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <box-icon name='user'></box-icon>
+                                    </span>
+                                    <input type="text" id="idUser" name="idUsr" class="form-control" placeholder="ID del usuario" required>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <box-icon name='search-alt-2' color="white"></box-icon> Buscar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        Asegúrese de ingresar el ID correcto para acceder a sus datos
+                    </div>
+                </div>
             </div>
-            <button type="submit">Buscar</button>
-        </form>
-        
+        </div>
     </div>
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

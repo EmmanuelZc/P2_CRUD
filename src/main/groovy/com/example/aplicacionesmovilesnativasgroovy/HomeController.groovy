@@ -18,7 +18,7 @@ class HomeController {
 
     @GetMapping("/register")
     def register(Model model) {
-        return "register"  // Se busca el archivo register.html en templates
+        return "register"  
     }
     @GetMapping("/login")
     def login(Model model){

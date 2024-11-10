@@ -2,24 +2,22 @@ package com.example.aplicacionesmovilesnativasgroovy
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.Table
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
-import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
+import jakarta.persistence.OneToMany
+import jakarta.persistence.CascadeType
 import java.util.Set
-import com.fasterxml.jackson.annotation.JsonBackReference
-
 
 @Entity
-@Table(name = "roles") 
+@Table(name = "roles")
 class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
     String nombre
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
-    Set<User> users
+    // Relación de uno a muchos con UserRole
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<UserRole> userRoles
 }

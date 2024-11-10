@@ -19,27 +19,27 @@ class SecurityConfig {
 @Bean
 SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .csrf().ignoringRequestMatchers("/registro", "/login", "/register", "/api/**")
+    .csrf().ignoringRequestMatchers("/registro", "/login", "/register", "/api/**")
+    .and()
+    .authorizeHttpRequests()
+        .requestMatchers("/error", "/registro", "/api/**", "/register", "/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/src/**", "/templates/**").permitAll()
+        .anyRequest().authenticated()
         .and()
-        .authorizeHttpRequests()
-            .requestMatchers("/error","/registro","/api/**", "/register", "/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/src/**", "/templates/**", "/").permitAll()
-            .anyRequest().authenticated()
-            .and()
-        .formLogin()
-            .loginPage("/login")  
-            .defaultSuccessUrl("/", true)
-            .failureUrl("/login?error=true")  
-            .permitAll()
-            .and()
-         .logout()
-                .logoutUrl("/logout")   // URL para logout
-                .logoutSuccessUrl("/login")  // Redirección después del logout
-                .invalidateHttpSession(true)  // Invalida la sesión actual
-                .deleteCookies("JSESSIONID")  // Borra la cookie de sesión
-                .permitAll()
+    .formLogin()
+        .loginPage("/login")  
+        .defaultSuccessUrl("/", true)
+        .failureUrl("/login?error=true")  
+        .permitAll()
         .and()
-        .userDetailsService(customUserDetailsService);
-    
+    .logout()
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/login")
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID")
+        .permitAll()
+    .and()
+    .userDetailsService(customUserDetailsService); // Verifica que esté usando el CustomUserDetailsService
+
     return http.build();
 }
 

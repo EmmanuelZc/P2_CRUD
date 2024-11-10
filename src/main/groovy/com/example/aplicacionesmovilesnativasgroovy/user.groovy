@@ -4,11 +4,12 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Table
-
+import jakarta.persistence.CascadeType
 import jakarta.persistence.GenerationType
 import jakarta.persistence.FetchType
 import jakarta.persistence.Table
 import jakarta.persistence.ManyToMany
+import jakarta.persistence.OneToMany
 import jakarta.persistence.JoinTable
 import jakarta.persistence.JoinColumn
 import java.util.Set
@@ -29,13 +30,9 @@ class User {
     String password
     Boolean enabled
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "usuarios_roles",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "rol_id")
-    )
-    @JsonManagedReference
-    Set<Rol> roles
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    Set<UserRole> userRoles;
+
+
 
 }

@@ -5,46 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Usuario</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <style>
+        /* Ajustes para centrar el card y darle un estilo más atractivo */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .card {
+            max-width: 500px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #dc3545; /* Color rojo para indicar acción de eliminación */
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            text-align: center;
+            padding: 20px;
+        }
+        .btn-danger {
+            width: 100%;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .form-control {
+            border-radius: 10px;
+        }
+        #alert {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <nav th:replace="fragments/navbar :: navFragment"></nav>
-
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Eliminar Usuario</h2>
-        <form action="#" method="POST" id="deleteUserForm" onsubmit="deleteUser(event)">
-            <div class="mb-3">
-                <label for="id" class="form-label">ID del Usuario</label>
-                <input type="number" class="form-control" id="id" name="id" placeholder="Ingresa el ID del usuario" required>
+    
+    <div class="container center-container">
+        <div class="card">
+            <div class="card-header">
+                <h2>Eliminar Usuario</h2>
             </div>
-            <button type="submit" class="btn btn-danger">Eliminar Usuario</button>
-        </form>
-
-        <div th:if="${message}" class="alert mt-3" th:class="${status == 'success' ? 'alert-success' : 'alert-danger'}">
-            <span th:text="${message}"></span>
+            <div class="card-body p-4">
+                <form action="#" method="POST" id="deleteUserForm" onsubmit="deleteUser(event)">
+                    <div class="form-group mb-3">
+                        <label for="id" class="form-label">ID del Usuario</label>
+                        <input type="number" class="form-control" id="id" name="id" placeholder="Ingresa el ID del usuario" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <box-icon name='trash' color="white"></box-icon> Eliminar Usuario
+                    </button>
+                </form>
+                
+                <div id="alert" class="alert mt-3"></div>
+            </div>
         </div>
     </div>
 
     <script>
         function deleteUser(event) {
-            event.preventDefault(); // Previene la acción por defecto del formulario
+            event.preventDefault(); 
             const userId = document.getElementById('id').value;
+            
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-            fetch(`/api/delete/${userId}`, {
-                method: 'DELETE'
+            fetch(`/delete/userDelete`, {
+                method: 'POST',
+                headers: {
+                    [csrfHeader]: csrfToken,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({ id: userId })
             })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
+            .then(response => response.text().then(text => ({status: response.status, text})))
+            .then(({status, text}) => {
+                const alertDiv = document.getElementById('alert');
+                alertDiv.style.display = 'block';
+                alertDiv.textContent = text;
+                
+                if (status === 200) {
+                    alertDiv.className = 'alert alert-success';
+                    alertDiv.textContent = "Usuario eliminado exitosamente.";
+                } else if (status === 404) {
+                    alertDiv.className = 'alert alert-warning';
+                    alertDiv.textContent = "Usuario no encontrado.";
+                } else {
+                    alertDiv.className = 'alert alert-danger';
                 }
-                throw new Error('Error en la eliminación del usuario');
-            })
-            .then(data => {
-                document.querySelector('.alert').classList.add('alert-success');
-                document.querySelector('.alert').textContent = data;
             })
             .catch(error => {
-                document.querySelector('.alert').classList.add('alert-danger');
-                document.querySelector('.alert').textContent = error.message;
+                const alertDiv = document.getElementById('alert');
+                alertDiv.style.display = 'block';
+                alertDiv.className = 'alert alert-danger';
+                alertDiv.textContent = 'Error al eliminar el usuario: ' + error.message;
             });
         }
     </script>

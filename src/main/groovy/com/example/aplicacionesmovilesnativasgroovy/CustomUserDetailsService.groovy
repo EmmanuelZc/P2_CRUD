@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-
 @Service
 class CustomUserDetailsService implements UserDetailsService {
 
@@ -17,13 +16,16 @@ class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsernameWithRoles(username);
         if (user == null) {
+            System.out.println("Usuario no encontrado: " + username)  // <-- Agrega esta línea
             throw new UsernameNotFoundException("Usuario no encontrado")
         }
 
-        def authorities = user.roles.collect { 
-            new SimpleGrantedAuthority(it.nombre) 
+        System.out.println("Usuario encontrado: " + username)  // <-- Agrega esta línea
+
+           def authorities = user.userRoles.collect { 
+            new SimpleGrantedAuthority(it.role.nombre) 
         }
 
         return new org.springframework.security.core.userdetails.User(

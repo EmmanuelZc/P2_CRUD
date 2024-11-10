@@ -1,5 +1,5 @@
 package com.example.aplicacionesmovilesnativasgroovy;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,19 +20,19 @@ class UpdateController {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/update")
     String mostrarFormularioBusqueda() {
         return "searchUpdate";  
     }
-
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/findUser")
     String buscarUsuario(@RequestParam("idUsr") Long idUsr, Model model) {
         var usuarioOpt = userRepository.findById(idUsr);
         
         if (usuarioOpt.isPresent()) {
             model.addAttribute("usuario", usuarioOpt.get());
-            return "update"; // Redirige a la vista de actualización
+            return "update"; 
         } else {
             model.addAttribute("errorMessage", "Usuario no encontrado");
             return "searchUpdate";
@@ -49,13 +49,12 @@ class UpdateController {
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             Model model) {
-
         var usuarioOpt = userRepository.findById(idUsr);
 
         if (usuarioOpt.isPresent()) {
             User usuario = usuarioOpt.get();
 
-            // Verifica y actualiza solo los campos no vacíos
+            
             if (!StringUtils.isEmpty(nombre)) usuario.setNombre(nombre);
             if (!StringUtils.isEmpty(apellidoPaterno)) usuario.setApaterno(apellidoPaterno);
             if (!StringUtils.isEmpty(apellidoMaterno)) usuario.setAmaterno(apellidoMaterno);

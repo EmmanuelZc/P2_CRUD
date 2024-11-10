@@ -29,7 +29,6 @@ class AdminController {
     @PostMapping(value = "/registro", consumes = "application/json", produces = "application/json")
     ResponseEntity<Void> registerUser(@RequestBody Map<String, Object> userMap) {
         try {
-            // Mapear los datos del JSON a la entidad User
             User user = new User()
             user.nombre = userMap.get("nombre").toString()
             user.apaterno = userMap.get("apaterno").toString()

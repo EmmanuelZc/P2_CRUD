@@ -1,20 +1,30 @@
 package com.example.aplicacionesmovilesnativasgroovy
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import com.example.utils.DatabaseUtils
-import groovy.sql.Sql
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
-public class RegisterController {
+class RegisterController {
+
+    private final UserRepository userRepository
+    private final RolRepository rolRepository
+    private final UserRoleRepository userRoleRepository
+    private final PasswordEncoder passwordEncoder
+
+    @Autowired
+    RegisterController(UserRepository userRepository, RolRepository rolRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository
+        this.rolRepository = rolRepository
+        this.userRoleRepository = userRoleRepository
+        this.passwordEncoder = passwordEncoder
+    }
 
     @PostMapping("/registro")
-    public String registrarUsuario(
+    String registrarUsuario(
             @RequestParam("nombre") String nombre,
             @RequestParam("apaterno") String apaterno,
             @RequestParam("amaterno") String amaterno,
@@ -23,38 +33,45 @@ public class RegisterController {
             @RequestParam("password") String password,
             Model model) {
 
-            Sql sql = null
-            def passwordEncoder = new BCryptPasswordEncoder()
-            def hashedPassword = passwordEncoder.encode(password) 
-           
         try {
-            // Obtener la instancia de conexión a la base de datos
-            sql = DatabaseUtils.getSqlInstance();
+            // Crear y guardar el usuario
+            User user = new User()
+            user.setNombre(nombre)
+            user.setApaterno(apaterno)
+            user.setAmaterno(amaterno)
+            user.setCumple(cumple)
+            user.setUsername(username)
+            user.setPassword(passwordEncoder.encode(password))
+            user.setEnabled(true)
 
-            // Consulta SQL para insertar el nuevo usuario en la base de datos
-            String insertQuery = "INSERT INTO usuarios (nombre, apaterno, amaterno, cumple,username, password) VALUES (?, ?, ?, ?, ?, ?)";
+            userRepository.save(user)
 
-            // Ejecutar la consulta con los parámetros recibidos
-            sql.execute(insertQuery, nombre, apaterno, amaterno,cumple, username,hashedPassword);
+            // Buscar o crear el rol "ROLE_USER"
+            Rol rol = rolRepository.findByNombre("ROLE_USER")
+            if (rol == null) {
+                rol = new Rol()
+                rol.setNombre("ROLE_USER")
+                rolRepository.save(rol)
+            }
 
-            // Añadir los datos del usuario al modelo para enviarlos a la vista
-            model.addAttribute("nombre", nombre);
-            model.addAttribute("apaterno", apaterno);
-            model.addAttribute("amaterno", amaterno);
-            model.addAttribute("cumple", cumple);
-            model.addAttribute("username", username);
+            // Crear y guardar la relación UserRole
+            UserRole userRole = new UserRole()
+            userRole.setUser(user)
+            userRole.setRole(rol)
+            userRoleRepository.save(userRole)
 
-            // Redirigir a una vista de confirmación
-            return "index";
+            // Añadir datos del usuario al modelo
+            model.addAttribute("nombre", nombre)
+            model.addAttribute("apaterno", apaterno)
+            model.addAttribute("amaterno", amaterno)
+            model.addAttribute("cumple", cumple)
+            model.addAttribute("username", username)
+
+            return "index"
 
         } catch (Exception e) {
-            // En caso de error, añadir un mensaje al modelo
-            model.addAttribute("error", "Error al registrar el usuario: " + e.getMessage());
-            return "registroError";
-        } finally {
-            if (sql != null) {
-                sql.close(); // Cerrar la conexión
-            }
+            model.addAttribute("error", "Error al registrar el usuario: " + e.getMessage())
+            return "registroError"
         }
     }
 }
