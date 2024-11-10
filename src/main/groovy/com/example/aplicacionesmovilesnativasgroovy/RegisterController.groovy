@@ -7,6 +7,10 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 
+/**
+ * Controlador para gestionar el registro de nuevos usuarios.
+ * Este controlador maneja las solicitudes de registro y la inserción de nuevos usuarios en la base de datos.
+ */
 @Controller
 class RegisterController {
 
@@ -23,6 +27,19 @@ class RegisterController {
         this.passwordEncoder = passwordEncoder
     }
 
+    /**
+     * Procesa la solicitud de registro de un nuevo usuario.
+     * Recibe los datos del formulario de registro, encripta la contraseña y guarda los datos en la base de datos.
+     *
+     * @param nombre el nombre del usuario
+     * @param apaterno el apellido paterno del usuario
+     * @param amaterno el apellido materno del usuario
+     * @param cumple la fecha de nacimiento del usuario
+     * @param username el nombre de usuario
+     * @param password la contraseña del usuario
+     * @param model el modelo para pasar datos a la vista
+     * @return el nombre de la vista de confirmación o de error
+     */
     @PostMapping("/registro")
     String registrarUsuario(
             @RequestParam("nombre") String nombre,

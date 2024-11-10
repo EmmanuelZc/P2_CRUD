@@ -8,11 +8,20 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import com.example.utils.DatabaseUtils
 
+/**
+ * Clase de configuración de seguridad que define las reglas de seguridad para la aplicación.
+ * Configura el servicio de usuario, el cifrado de contraseñas y las rutas protegidas.
+ */
 @Configuration
 class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService
 
+    /**
+     * Constructor que inyecta el servicio de detalles de usuario personalizado.
+     *
+     * @param customUserDetailsService Servicio que carga los detalles del usuario.
+     */
     SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService
     }
@@ -43,12 +52,21 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http.build();
 }
 
-
-     @Bean
+    /**
+     * Proporciona un bean de codificador de contraseñas que utiliza BCrypt.
+     *
+     * @return una instancia de BCryptPasswordEncoder.
+     */
+    @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder()
     }
 
+    /**
+     * Proporciona un bean de utilidad de base de datos.
+     *
+     * @return una instancia de DatabaseUtils.
+     */
     @Bean
     DatabaseUtils databaseUtils() {
         return new DatabaseUtils()

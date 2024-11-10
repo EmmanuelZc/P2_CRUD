@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.thymeleaf.util.StringUtils;
 
+/**
+ * Controlador que maneja la actualización de información de usuario.
+ * Permite la búsqueda de un usuario por ID y la actualización de sus datos personales.
+ */
 @Controller
 @RequestMapping("/updateUser")
 class UpdateController {
@@ -16,6 +20,12 @@ class UpdateController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor que inyecta el repositorio de usuarios y el codificador de contraseñas.
+     *
+     * @param userRepository Repositorio que maneja las operaciones CRUD de usuarios.
+     * @param passwordEncoder Codificador de contraseñas para cifrar las nuevas contraseñas.
+     */
     UpdateController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -39,6 +49,20 @@ class UpdateController {
         }
     }
 
+    /**
+     * Actualiza la información de un usuario.
+     * Solo actualiza los campos que no están vacíos.
+     *
+     * @param idUsr ID del usuario a actualizar.
+     * @param nombre Nuevo nombre del usuario (opcional).
+     * @param apellidoPaterno Nuevo apellido paterno del usuario (opcional).
+     * @param apellidoMaterno Nuevo apellido materno del usuario (opcional).
+     * @param fechaNacimiento Nueva fecha de nacimiento del usuario (opcional).
+     * @param username Nuevo nombre de usuario (opcional).
+     * @param password Nueva contraseña del usuario (opcional).
+     * @param model Modelo para enviar mensajes de éxito o error a la vista.
+     * @return Nombre de la vista de inicio después de la actualización.
+     */
     @PostMapping("/update")
     String actualizarUsuario(
             @RequestParam("idUsr") Long idUsr,
