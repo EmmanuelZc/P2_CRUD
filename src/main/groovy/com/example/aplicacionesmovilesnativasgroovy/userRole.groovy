@@ -7,22 +7,26 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "usuarios_roles")
-class UserRole {
+public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id
+    private Long id;
 
-    // Relación hacia User
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    User user
+    private User user;
 
-    // Relación hacia Rol
     @ManyToOne
     @JoinColumn(name = "rol_id", nullable = false)
-    Rol role
+    @JsonBackReference
+
+    private Rol role;
+
+    
 }

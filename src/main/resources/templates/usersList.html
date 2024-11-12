@@ -9,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
-    <nav th:replace="fragments/navbar :: navFragment"></nav>
+    <nav th:replace="~{fragments/navbar :: navFragment}"></nav>
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Lista de Usuarios Registrados</h2>
@@ -31,9 +31,14 @@
                         <td th:text="${usuario.apaterno}">Apellido Paterno</td>
                         <td th:text="${usuario.amaterno}">Apellido Materno</td>
                         <td th:text="${usuario.cumple}">Fecha de Nacimiento</td>
-                            <td>
-    <span th:each="userRole : ${usuario.userRoles}" th:text="${userRole.role.nombre}" th:append=", "></span>
-                            </td>
+                        <!-- <td>
+                            <span th:each="userRole, iterStat : ${usuario.userRoles}" 
+                                  th:text="${userRole.role.nombre}" 
+                                  th:append="${!iterStat.last ? ', ' : ''}">
+                            </span>
+                        </td>
+                         -->
+                        
                         <td th:text="${usuario.username}">Username</td>
                     </tr>
                 </tbody>

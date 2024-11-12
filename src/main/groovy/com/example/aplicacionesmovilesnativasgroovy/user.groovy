@@ -44,5 +44,6 @@ class User {
     Boolean enabled
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     Set<UserRole> userRoles
 }
