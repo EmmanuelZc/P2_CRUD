@@ -22,6 +22,7 @@ class SecurityConfig {
             .csrf().ignoringRequestMatchers("/registro", "/login", "/register", "/api/**")
             .and()
             .authorizeHttpRequests()
+                .requestMatchers("/api/**").permitAll()
                 .requestMatchers( "/registro", "/register", "/login", "/css/**", "/js/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

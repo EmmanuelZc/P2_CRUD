@@ -28,5 +28,8 @@ public class UserRole {
 
     private Rol role;
 
-    
+    //Metodo para obtener el rol
+    Rol getRole(){
+        return role
+    }
 }
