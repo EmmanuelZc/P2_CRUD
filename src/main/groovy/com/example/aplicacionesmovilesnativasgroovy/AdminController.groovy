@@ -18,23 +18,25 @@ class AdminController {
     ResponseEntity<?> getAllUsers() {
         try {
             List<User> users = userRepository.findAllWithRoles()
-            List<Map<String, Object>> response = users.stream().map { user ->
-                Map<String, Object> userMap = new HashMap<>()
-                userMap.put("id", user.id)
-                userMap.put("nombre", user.nombre)
-                userMap.put("apaterno", user.apaterno)
-                userMap.put("amaterno", user.amaterno)
-                userMap.put("cumple", user.cumple)
-                userMap.put("username", user.username)
-                userMap.put("enabled", user.enabled)
-                userMap.put("roles", user.userRoles.stream().map { userRole ->
-                    Map<String, Object> roleMap = new HashMap<>()
-                    roleMap.put("id", userRole.role.id)
-                    roleMap.put("nombre", userRole.role.nombre)
-                    roleMap
-                }.toList())
-                userMap
-            }.toList()
+            List<Map<String, Object>> response = users.stream()
+                .filter { user -> user.userRoles.any { it.role.id == 2 } } // Filtrar usuarios con rol de id 2 (ROLE_USER)
+                .map { user ->
+                    Map<String, Object> userMap = new HashMap<>()
+                    userMap.put("id", user.id)
+                    userMap.put("nombre", user.nombre)
+                    userMap.put("apaterno", user.apaterno)
+                    userMap.put("amaterno", user.amaterno)
+                    userMap.put("cumple", user.cumple)
+                    userMap.put("username", user.username)
+                    userMap.put("enabled", user.enabled)
+                    userMap.put("roles", user.userRoles.stream().map { userRole ->
+                        Map<String, Object> roleMap = new HashMap<>()
+                        roleMap.put("id", userRole.role.id)
+                        roleMap.put("nombre", userRole.role.nombre)
+                        roleMap
+                    }.toList())
+                    userMap
+                }.toList()
             return ResponseEntity.ok(response)
         } catch (Exception e) {
             e.printStackTrace()
