@@ -50,7 +50,7 @@ class AdminActivity : ComponentActivity() {
         }
 
         viewModel.deleteStatus.observe(this) { status ->
-            if (status == 200) {
+            if (status == 204) {
                 Toast.makeText(this, "Usuario eliminado correctamente", Toast.LENGTH_LONG).show()
                 loadUserList() // Recarga la lista de usuarios después de la eliminación
             } else {

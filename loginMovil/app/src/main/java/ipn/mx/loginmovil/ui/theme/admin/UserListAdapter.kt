@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import ipn.mx.loginmovil.R
 import ipn.mx.loginmovil.data.models.User
 import ipn.mx.loginmovil.ui.theme.auth.EditUserActivity
@@ -45,8 +46,14 @@ class UserListAdapter(
             context.startActivity(intent)
         }
 
-        deleteButton.setOnClickListener {
-            deleteUserCallback(user.username)
+        deleteButton.setOnClickListener { // Mostrar alerta de confirmación
+            AlertDialog.Builder(context)
+                .setTitle("Confirmar eliminación")
+                .setMessage("¿Estás seguro de que quieres eliminar al usuario ${user.username}?")
+                .setPositiveButton("Eliminar") 	{ _, _ ->
+                    deleteUserCallback(user.username) }
+                .setNegativeButton("Cancelar", null)
+                .show()
         }
 
         return view

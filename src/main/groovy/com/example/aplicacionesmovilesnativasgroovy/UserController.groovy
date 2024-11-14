@@ -5,6 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * Controlador REST para la gestión de usuarios.
  */
@@ -28,12 +32,28 @@ class UserController {
     @PostMapping("/auth")
     ResponseEntity<?> authenticateUser(@RequestParam("usuario") String usuario, @RequestParam("password") String password) {
         try {
-            User user = userRepository.findByUsername(usuario);
+            User user = userRepository.findByUsernameWithRoles(usuario);
             var passwordEncoder = new BCryptPasswordEncoder();
             if (user != null && passwordEncoder.matches(password, user.password)) {
-                // Excluye la contraseña del JSON devuelto
+                // Preparar respuesta
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", user.id);
+                response.put("nombre", user.nombre);
+                response.put("apaterno", user.apaterno);
+                response.put("amaterno", user.amaterno);
+                response.put("cumple", user.cumple);
+                response.put("username", user.username);
+                response.put("enabled", user.enabled);
+                response.put("roles", user.userRoles.stream().map(userRole -> {
+                    Map<String, Object> roleMap = new HashMap<>();
+                    roleMap.put("id", userRole.role.id);
+                    roleMap.put("nombre", userRole.role.nombre);
+                    return roleMap;
+                }).collect(Collectors.toList()));
+
+                // Excluir la contraseña del JSON devuelto
                 user.password = null;
-                return ResponseEntity.ok(user);
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
@@ -52,11 +72,27 @@ class UserController {
     @GetMapping("/auth/perfil/{username}")
     ResponseEntity<?> getUserProfile(@PathVariable("username") String username) {
         try {
-            User user = userRepository.findByUsername(username);
+            User user = userRepository.findByUsernameWithRoles(username);
             if (user != null) {
-                // Excluye la contraseña del JSON devuelto
+                // Preparar respuesta
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", user.id);
+                response.put("nombre", user.nombre);
+                response.put("apaterno", user.apaterno);
+                response.put("amaterno", user.amaterno);
+                response.put("cumple", user.cumple);
+                response.put("username", user.username);
+                response.put("enabled", user.enabled);
+                response.put("roles", user.userRoles.stream().map(userRole -> {
+                    Map<String, Object> roleMap = new HashMap<>();
+                    roleMap.put("id", userRole.role.id);
+                    roleMap.put("nombre", userRole.role.nombre);
+                    return roleMap;
+                }).collect(Collectors.toList()));
+
+                // Excluir la contraseña del JSON devuelto
                 user.password = null;
-                return ResponseEntity.ok(user);
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
             }
@@ -93,7 +129,7 @@ class UserController {
      * @param updatedUser el objeto usuario con los nuevos detalles
      * @return el usuario actualizado o un mensaje de error
      */
-    @PutMapping("/auth/update")
+       @PutMapping("/auth/update")
     ResponseEntity<?> updateUser(@RequestBody User updatedUser) {
         try {
             User user = userRepository.findById(updatedUser.id).orElse(null);
@@ -101,7 +137,11 @@ class UserController {
             if (user != null) {
                 // Actualiza los campos del usuario existente con los datos nuevos
                 user.username = updatedUser.username != null ? updatedUser.username : user.username;
-                user.email = updatedUser.email != null ? updatedUser.email : user.email;
+                user.nombre = updatedUser.nombre != null ? updatedUser.nombre : user.nombre;
+                user.apaterno = updatedUser.apaterno != null ? updatedUser.apaterno : user.apaterno;
+                user.amaterno = updatedUser.amaterno != null ? updatedUser.amaterno : user.amaterno;
+                user.cumple = updatedUser.cumple != null ? updatedUser.cumple : user.cumple;
+                user.enabled = updatedUser.enabled != null ? updatedUser.enabled : user.enabled;
 
                 // Si se incluye una nueva contraseña en el objeto `updatedUser`, la ciframos antes de guardarla
                 if (updatedUser.password != null) {
@@ -109,12 +149,32 @@ class UserController {
                     user.password = passwordEncoder.encode(updatedUser.password);
                 }
 
+                // Actualiza los roles del usuario
+                if (updatedUser.userRoles != null) {
+                    user.userRoles.clear();
+                    user.userRoles.addAll(updatedUser.userRoles);
+                }
+
                 // Guarda los cambios en el repositorio
                 userRepository.save(user);
 
-                // Excluir la contraseña del JSON devuelto
-                user.password = null;
-                return ResponseEntity.ok(user);
+                // Preparar respuesta con los roles en el formato requerido
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", user.id);
+                response.put("nombre", user.nombre);
+                response.put("apaterno", user.apaterno);
+                response.put("amaterno", user.amaterno);
+                response.put("cumple", user.cumple);
+                response.put("username", user.username);
+                response.put("enabled", user.enabled);
+                response.put("roles", user.userRoles.stream().map(userRole -> {
+                    Map<String, Object> roleMap = new HashMap<>();
+                    roleMap.put("id", userRole.role.id);
+                    roleMap.put("nombre", userRole.role.nombre);
+                    return roleMap;
+                }).toList());
+
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
             }
