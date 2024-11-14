@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import ipn.mx.loginmovil.R
 import ipn.mx.loginmovil.data.models.Rol
@@ -58,9 +59,7 @@ class RegisterActivity : AppCompatActivity() {
             val username = usernameField.text.toString()
             val password = passwordField.text.toString()
 
-            if (name.isNotEmpty() && lastName.isNotEmpty() && lastName2.isNotEmpty() &&
-                birthdate.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty()) {
-
+            if (validateInput(passwordField, password)) {
                 // Encripta la contraseña usando BCrypt
                 val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
 
@@ -78,14 +77,36 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 // Llama al método del ViewModel para registrar el usuario
                 viewModel.registerUser(user)
-
-            } else {
-                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
 
         backButton.setOnClickListener {
             finish() // Finaliza la actividad actual y regresa a la anterior
         }
+    }
+
+    private fun validateInput(passwordField: EditText, password: String): Boolean {
+        var isValid = true
+
+        // Validar longitud de contraseña
+        if (password.length < 8) {
+            passwordField.error = "La contraseña debe tener al menos 8 caracteres"
+            passwordField.requestFocus()
+            animateView(passwordField)
+            isValid = false
+        }
+
+        return isValid
+    }
+
+    private fun animateView(view: EditText) {
+        view.setBackgroundColor(ContextCompat.getColor(this, R.color.errorColor))
+        view.animate()
+            .setDuration(100)
+            .alpha(0.5f)
+            .withEndAction {
+                view.alpha = 1.0f
+                view.setBackgroundColor(ContextCompat.getColor(this, R.color.defaultColor))
+            }
     }
 }
