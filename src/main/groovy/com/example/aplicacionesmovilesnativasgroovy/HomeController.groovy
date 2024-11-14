@@ -21,13 +21,18 @@ class HomeController {
      * @param authentication la autenticación del usuario actual
      * @return el nombre de la vista "index" que se renderiza como la página de inicio
      */
-    @GetMapping("/")
-    def index(Model model, Authentication authentication) {
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
-        model.addAttribute("isAuthenticated", isAuthenticated)
-        model.addAttribute("username", isAuthenticated ? authentication.getName() : "Guest")
-        return "index"  
+   @GetMapping("/")
+def index(Model model, Authentication authentication) {
+    boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
+    model.addAttribute("isAuthenticated", isAuthenticated)
+    model.addAttribute("username", isAuthenticated ? authentication.getName() : "Guest")
+    if (isAuthenticated) {
+        def roles = authentication.authorities.collect { it.authority }
+        model.addAttribute("roles", roles)
     }
+    return "index"
+}
+
 
     /**
      * Muestra la página de registro.
