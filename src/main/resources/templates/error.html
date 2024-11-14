@@ -5,9 +5,7 @@
     <title>Error</title>
 </head>
 <body>
-    <div>
-        <nav th:replace="fragments/navbar :: navFragment"></nav>
-    </div>
+    
     <h1>Oops! Algo salió mal.</h1>
     <p th:text="'Error ' + ${status} + ': ' + ${error}"></p>
     <p th:text="${message}"></p>

@@ -13,20 +13,11 @@ import java.util.Set
 @Table(name = "roles")
 class Rol {
 
-    /**
-     * Identificador único del rol.
-     * Se genera automáticamente en la base de datos.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
-
-    /**
-     * Nombre del rol, por ejemplo, "ADMIN" o "USER".
-     */
     String nombre
 
-    // Relación de uno a muchos con UserRole
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "role")
     Set<UserRole> userRoles
 }

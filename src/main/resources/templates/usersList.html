@@ -31,14 +31,10 @@
                         <td th:text="${usuario.apaterno}">Apellido Paterno</td>
                         <td th:text="${usuario.amaterno}">Apellido Materno</td>
                         <td th:text="${usuario.cumple}">Fecha de Nacimiento</td>
-                        <!-- <td>
-                            <span th:each="userRole, iterStat : ${usuario.userRoles}" 
-                                  th:text="${userRole.role.nombre}" 
-                                  th:append="${!iterStat.last ? ', ' : ''}">
-                            </span>
+                        <td>
+                            <span th:each="userRole : ${usuario.userRoles}" th:text="${userRole.role.nombre}">Rol</span>
                         </td>
-                         -->
-                        
+                    
                         <td th:text="${usuario.username}">Username</td>
                     </tr>
                 </tbody>

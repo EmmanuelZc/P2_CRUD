@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired
 @RequestMapping("/users")
 class UserReadController {
 
-    private final UserRepository userRepository
+    private final UserRepository userRepository;
 
     @Autowired
     UserReadController(UserRepository userRepository) {
-        this.userRepository = userRepository
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/list")
     String listarUsuarios(Model model) {
-        List<User> usuarios = userRepository.findAllWithRoles()
-        model.addAttribute("usuarios", usuarios)
-        return "usersList"
+        List<User> usuarios = userRepository.findAllWithRoles();
+        model.addAttribute("usuarios", usuarios);
+        return "usersList";
     }
 }
