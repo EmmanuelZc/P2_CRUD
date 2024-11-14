@@ -1,19 +1,9 @@
 package com.example.aplicacionesmovilesnativasgroovy
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Table;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import java.util.Set
+
 @Entity
 @Table(name = "usuarios")
 class User {
@@ -30,6 +20,7 @@ class User {
     String password
     Boolean enabled
 
-    @OneToMany(mappedBy = "user")  // Relación uno a muchos con la tabla intermedia `usuarios_roles`
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Relación uno a muchos con la tabla intermedia `usuarios_roles`
+    @JsonManagedReference
     Set<UserRole> userRoles
 }

@@ -9,9 +9,13 @@ import org.springframework.http.HttpStatus
 class AdminController {
 
     private final UserRepository userRepository
+    private final RolRepository rolRepository
+    private final UserRoleRepository userRoleRepository
 
-    AdminController(UserRepository userRepository) {
+    AdminController(UserRepository userRepository, RolRepository rolRepository, UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository
+        this.rolRepository = rolRepository
+        this.userRoleRepository = userRoleRepository
     }
 
     @PostMapping("/admin")
@@ -57,15 +61,19 @@ class AdminController {
             user.password = userMap.get("password").toString()
             user.enabled = userMap.get("enabled") as Boolean
             user.userRoles = new HashSet<>()
+
+            // Obtener los roles y asignarlos
             userMap.get("roles").each { rolMap ->
-                UserRole userRole = new UserRole()
-                Rol rol = new Rol()
-                rol.id = (rolMap.get("id") as Number).longValue()
-                rol.nombre = rolMap.get("nombre").toString()
-                userRole.user = user
-                userRole.role = rol
-                user.userRoles.add(userRole)
+                Long roleId = (rolMap.get("id") as Number).longValue()
+                Rol rol = rolRepository.findById(roleId).orElse(null)
+                if (rol != null) {
+                    UserRole userRole = new UserRole()
+                    userRole.user = user
+                    userRole.role = rol
+                    user.userRoles.add(userRole)
+                }
             }
+
             userRepository.save(user)
             return ResponseEntity.status(HttpStatus.CREATED).build()
         } catch (Exception e) {

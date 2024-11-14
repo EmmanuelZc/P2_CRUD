@@ -1,15 +1,7 @@
-package com.example.aplicacionesmovilesnativasgroovy;
+package com.example.aplicacionesmovilesnativasgroovy
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*
+import com.fasterxml.jackson.annotation.JsonBackReference
 
 @Entity
 @Table(name = "usuarios_roles")
@@ -19,11 +11,13 @@ class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false) // Esta columna refiere a `usuarios.id`
+    @JsonBackReference
     User user
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rol_id", nullable = false) // Esta columna refiere a `roles.id`
+    @JsonBackReference
     Rol role
 }
