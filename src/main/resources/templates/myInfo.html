@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Información</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+    <nav th:replace="fragments/navbar :: navFragment"></nav>
+    
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="text-center">Mi Información</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Nombre:</strong>
+                    </div>
+                    <div class="col-md-8" th:text="${usuario.nombre}">Nombre del Usuario</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Apellido Paterno:</strong>
+                    </div>
+                    <div class="col-md-8" th:text="${usuario.apaterno}">Apellido Paterno</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Apellido Materno:</strong>
+                    </div>
+                    <div class="col-md-8" th:text="${usuario.amaterno}">Apellido Materno</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Fecha de Nacimiento:</strong>
+                    </div>
+                    <div class="col-md-8" th:text="${usuario.cumple}">Fecha de Nacimiento</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <strong>Nombre de Usuario:</strong>
+                    </div>
+                    <div class="col-md-8" th:text="${usuario.username}">Nombre de Usuario</div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -41,9 +41,16 @@
                           Action
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/users/list">Read</a></li>
+                            <li th:if="${roles != null && roles.contains('ROLE_ADMIN')}">
+                                <a class="dropdown-item" href="/users/list">Read</a>
+                            </li>
+                            <li th:if="${roles != null && roles.contains('ROLE_USER')}">
+                                <a class="dropdown-item" href="/users/myinfo">Read</a>
+                            </li>
                             <li><a class="dropdown-item" href="/updateUser/update">Update</a></li>
-                            <li><a class="dropdown-item" href="/delete/userDelete">Delete</a></li>
+                            <li th:if="${roles != null && roles.contains('ROLE_ADMIN')}">
+                                <a class="dropdown-item" href="/delete/userDelete">Delete</a>
+                            </li>
                         </ul>
                       </li>
                 </ul>
